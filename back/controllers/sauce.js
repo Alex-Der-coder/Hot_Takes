@@ -21,8 +21,6 @@ exports.getAllSauces = (req, res) => {
 
 
 
-const upload = multer({ storage });
-
 
 exports.createSauce = (req, res, next) => {
   // Store the data sent by the front-end as form-data in a variable by converting it to a JavaScript object
@@ -70,17 +68,51 @@ exports.getOneSauce = (req, res, next) => {
 
 
 exports.updateSauce = (req, res) => {
-  const sauceObject = req.file ?
-  // Si il existe déjà une image
-  {
-    ...JSON.parse(req.body.sauce),
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-  } : { ...req.body }; 
-  // Si il n'existe pas d'image
-  Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-  .then(() => res.status(200).json({ message: 'Sauce mise à jour !' }))
-  .catch(error => res.status(400).json({ error }));
+  // Get the sauce object from the request body
+  const sauceObject = JSON.parse(req.body.sauce);
+  
+  // Check if a new image has been uploaded
+  if (req.file) {
+    // If a new image has been uploaded, delete the old image
+    Sauce.findOne({ _id: req.params.id }).then(sauce => {
+      const oldImageUrl = sauce.imageUrl;
+      const filename = oldImageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+        // Update the sauce object with the new image URL
+        sauceObject.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        // Update the sauce in the database
+        Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Sauce mise à jour !' }))
+          .catch(error => res.status(400).json({ error }));
+      });
+    });
+  } else {
+    // If no new image has been uploaded, update the sauce object without deleting the old image
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'Sauce mise à jour !' }))
+      .catch(error => res.status(400).json({ error }));
+  }
 };
+
+
+exports.deleteSauce = (req, res) => {
+  Sauce.findOne({ _id: req.params.id }).then(sauce => 
+    {
+      const filename = sauce.imageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`,() => {
+        Sauce.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Sauce supprimée !' }))
+        .catch(error => res.status(400).json({ error })); 
+      });
+    });
+  };
+
+
+
+
+
+
+
 
 exports.deleteSauce = (req, res) => {
   Sauce.findOne({ _id: req.params.id }).then(sauce => 

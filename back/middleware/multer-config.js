@@ -3,7 +3,10 @@ const multer = require('multer');
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
-  'image/png': 'png'
+  'image/png': 'png',
+  'image/gif': 'gif',
+  'image/bmp': 'bmp',
+  'image/webp': 'webp' // ajout de l'extension WebP
 };
 
 const storage = multer.diskStorage({
