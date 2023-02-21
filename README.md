@@ -27,3 +27,6 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 # Projet-6
 
+Hint for use : 
+
+"We need to create a folder called 'images' within the 'back' folder of this repository for the proper functioning of the project."
