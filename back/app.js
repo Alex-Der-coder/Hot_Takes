@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const path = require('path');
@@ -10,7 +11,7 @@ const sauceRoutes = require('./routes/sauce');
 
 
 /* Mongo DB Connexion */
-mongoose.connect('mongodb+srv://Alex:ebhrSVu6PVAIiaQ0@atlascluster.yhbyxcr.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
@@ -32,7 +33,7 @@ app.use(expressSanitizer());
 /*
 
 /* Route API */
-app.use('/api/auth', userRoutes);
+app.use('/api/auth/', userRoutes);
 app.use('/api', sauceRoutes);
 
 module.exports = app;

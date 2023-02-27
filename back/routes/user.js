@@ -11,7 +11,7 @@ const app = express();
 app.use(expressSanitizer());
 
 /* Register an account */
-exports.signup = (req, res, next) => {
+const signup = (req, res, next) => {
     // Désinfecte l'email et le mot de passe de l'utilisateur
     const email = req.sanitize(req.body.email);
     const password = req.sanitize(req.body.password);
@@ -21,13 +21,16 @@ exports.signup = (req, res, next) => {
         const user = new User({ email, password: hash });
         user.save()
         .then(() => res.status(200).json({ message: 'User created' }))
-        .catch(error => res.status(400).json({ message: 'address mail already used' }));
+        .catch(error => res.status(400).json({ message: 'Address email already used' }));
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => {
+        console.error(error);
+        res.status(500).json({ error });
+    });
 };
 
 /* Login */
-exports.login = (req, res, next) => {
+const login = (req, res, next) => {
     // Désinfecte l'email et le mot de passe de l'utilisateur
     const email = req.sanitize(req.body.email);
     const password = req.sanitize(req.body.password);
@@ -53,9 +56,18 @@ exports.login = (req, res, next) => {
                 )
             });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({ error });
+        });
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => {
+        console.error(error);
+        res.status(500).json({ error });
+    });
 };
 
-module.exports = Router ;
+Router.post('/signup', signup);
+Router.post('/login', login);
+
+module.exports = Router;
