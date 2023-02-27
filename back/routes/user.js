@@ -2,7 +2,7 @@ const express = require('express');
 const expressSanitizer = require('express-sanitizer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const Router = express.Router();
 const User = require('../models/userModel');
 
 const app = express();
@@ -57,3 +57,5 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
+
+module.exports = Router ;

@@ -19,10 +19,6 @@ exports.getAllSauces = (req, res) => {
 };
 
 
-
-
-
-
 exports.createSauce = (req, res, next) => {
   // Store the data sent by the front-end as form-data in a variable by converting it to a JavaScript object
   const bodypost = JSON.parse(req.body.sauce);

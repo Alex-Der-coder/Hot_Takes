@@ -29,6 +29,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 /* Middleware for data sanitization */
 app.use(expressSanitizer());
+/*
 
 /* Route API */
 app.use('/api/auth', userRoutes);

@@ -20,13 +20,8 @@ exports.signup = (req, res, next) => {
     .then(hash => {
         const user = new User({ email, password: hash });
         user.save()
-<<<<<<< HEAD
         .then(() => res.status(200).json({message:'User created'}))
         .catch(error => res.status(400).json({message:'adress mail already used'}));
-=======
-        .then(() => res.status(200).json({ message: 'User created' }))
-        .catch(error => res.status(400).json({ message: 'address mail already used' }));
->>>>>>> 8c3cb92 (save end projet)
     })
     .catch(error => res.status(500).json({ error }));
 };
@@ -62,3 +57,4 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
+module.exports = router ;
