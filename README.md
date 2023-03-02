@@ -34,8 +34,5 @@ Hint for use :
 
 For OpenclassRooms teatcher(s) about "livrable" : 
 
--Step one : open folder of my "livrable" with Visual Studio Code for show the .env file.
 
--step two :
-
-The .env file should be placed in the root directory of the "back" folder, at the same level as app.js.
+The .env file should be create in the root directory of the "back" folder, at the same level as app.js.
